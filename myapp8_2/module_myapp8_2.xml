@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_myapp8_2" default="compile.module.myapp8_2">
+  <dirname property="module.myapp8_2.basedir" file="${ant.file.module_myapp8_2}"/>
+  
+  <property name="module.jdk.home.myapp8_2" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.myapp8_2" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.myapp8_2" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.myapp8_2" value="-encoding UTF-8 -source 1.8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="myapp8_2.output.dir" value="${module.myapp8_2.basedir}/bin"/>
+  <property name="myapp8_2.testoutput.dir" value="${module.myapp8_2.basedir}/bin"/>
+  
+  <path id="myapp8_2.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="myapp8_2.module.production.classpath">
+    <path refid="${module.jdk.classpath.myapp8_2}"/>
+    <pathelement location="${basedir}/lib/controlsfx-8.0.6_20.jar"/>
+  </path>
+  
+  <path id="myapp8_2.runtime.production.module.classpath">
+    <pathelement location="${myapp8_2.output.dir}"/>
+    <pathelement location="${basedir}/lib/controlsfx-8.0.6_20.jar"/>
+  </path>
+  
+  <path id="myapp8_2.module.classpath">
+    <pathelement location="${myapp8_2.output.dir}"/>
+    <path refid="${module.jdk.classpath.myapp8_2}"/>
+    <pathelement location="${basedir}/lib/controlsfx-8.0.6_20.jar"/>
+  </path>
+  
+  <path id="myapp8_2.runtime.module.classpath">
+    <pathelement location="${myapp8_2.output.dir}"/>
+    <pathelement location="${basedir}/lib/controlsfx-8.0.6_20.jar"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.myapp8_2">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.myapp8_2">
+    <patternset refid="excluded.from.module.myapp8_2"/>
+  </patternset>
+  
+  <path id="myapp8_2.module.sourcepath">
+    <dirset dir="${module.myapp8_2.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.myapp8_2" depends="compile.module.myapp8_2.production,compile.module.myapp8_2.tests" description="Compile module myapp8_2"/>
+  
+  <target name="compile.module.myapp8_2.production" depends="register.custom.compilers" description="Compile module myapp8_2; production classes">
+    <mkdir dir="${myapp8_2.output.dir}"/>
+    <javac2 destdir="${myapp8_2.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.myapp8_2}/javac">
+      <compilerarg line="${compiler.args.myapp8_2}"/>
+      <bootclasspath refid="myapp8_2.module.bootclasspath"/>
+      <classpath refid="myapp8_2.module.production.classpath"/>
+      <src refid="myapp8_2.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.myapp8_2"/>
+    </javac2>
+    
+    <copy todir="${myapp8_2.output.dir}">
+      <fileset dir="${module.myapp8_2.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.myapp8_2.tests" depends="register.custom.compilers,compile.module.myapp8_2.production" description="compile module myapp8_2; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.myapp8_2" description="cleanup module">
+    <delete dir="${myapp8_2.output.dir}"/>
+    <delete dir="${myapp8_2.testoutput.dir}"/>
+  </target>
+</project>
